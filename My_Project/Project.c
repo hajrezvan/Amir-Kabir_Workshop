@@ -9,7 +9,7 @@
 #define COL_BLOCK_SIZE 8
 
 int dimension_x, dimension_y;
-char visual_map[4*10+1][8*10+1];
+char visual_map[4*50+1][8*50+1];
 
 int random_function(void);
 int get_number_of_station();
@@ -18,6 +18,7 @@ void draw_table_2();
 void print();
 void robber_start();
 void robber_Move();
+void police_Move();
 void start_game();
 
 int main()
@@ -39,6 +40,8 @@ void start_game()
     robber_start();
 
     get_number_of_station();
+    robber_Move();
+    police_Move();
 }
 
 void print()
@@ -87,10 +90,10 @@ int get_number_of_station()
     station_counter = station_counter_Loop;
 
     int counter = 0;
-    int k = 0;
 
     for (counter = 0; counter <= station_counter; counter++)
     {
+        int k = 0;
         int controler = number_of_police[counter];
         for (int k = 0; k < controler;)
         {
@@ -152,9 +155,59 @@ void robber_start()
     print();
 }
 
-void robber_Move()
-{
+void robber_Move() {
+    int i_counter, j_counter;
+    for (j_counter = 0; j_counter < dimension_y * 2; j_counter++) {
+        for (i_counter = 0; i_counter < dimension_x * 4; i_counter++) {
+            if (visual_map[i_counter][j_counter] == 'T') {
+                visual_map[i_counter][j_counter] = ' ';
 
+                int i = random_function();
+                if (i < 0)
+                    i = (i % 2) * (-1);
+                i = i % 2;
+                int j = random_function();
+                if (j < 0)
+                    j = (i % 2) * (-1);
+                j = i % 2;
+                visual_map[i_counter][j_counter];
+                visual_map[i_counter + i][j_counter + j] = 'T';
+            } else
+            {
+                continue;
+            }
+        }
+    }
+}
+void police_Move()
+{
+    int i_counter, j_counter;
+    for (j_counter = 0; j_counter < dimension_y * 2; j_counter++)
+    {
+        for (i_counter = 0; i_counter < dimension_x * 4;)
+        {
+            if (visual_map[i_counter][j_counter] != 'p')
+            {
+                visual_map[i_counter][j_counter] = ' ';
+
+                int i = random_function();
+                if (i < 0)
+                    i = (i % 2) * (-1);
+                i = i % 2;
+                int j = random_function();
+                if (j < 0)
+                    j = (i % 2) * (-1);
+                j = i % 2;
+                visual_map[i_counter][j_counter];
+                visual_map[i_counter + i][j_counter + j] = 'P';
+                i_counter++;
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
 }
 
 void draw_table_1() {
@@ -205,3 +258,4 @@ void draw_table_2()
         }
     }
 }
+
