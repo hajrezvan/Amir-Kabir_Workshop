@@ -13,21 +13,49 @@ char visual_map[4*10+1][8*10+1];
 
 int random_function(void);
 int get_number_of_station();
-void draw_table();
+void draw_table_1();
+void draw_table_2();
 void print();
+void robber_start();
+void robber_Move();
+void start_game();
 
 int main()
 {
-    printf("Lotfan Abaad Mored Nazar khod ra vared konid (x * y): ");             // Gereftan Abaad Bazi:
+    printf("Lotfan Abaad Mored Nazar khod ra vared konid (x * y): ");
     scanf("%d * %d",&dimension_y,&dimension_x);
 
-    draw_table();
+    start_game();
+
+    return 0;
+}
+
+void start_game()
+{
+    //draw_table_1();
+    draw_table_2();
     print();
 
-    sleep(3);
+    robber_start();
 
-    get_number_of_station(dimension_x,dimension_y);
-    return 0;
+    get_number_of_station();
+}
+
+void print()
+{
+    int i,j;
+
+    //system("clear");
+
+    for (i = 0; i <= 2 * dimension_x; i++)
+    {
+        for (j = 0;j <= 4 * dimension_y; j++)
+        {
+            printf("%c",visual_map[i][j]);
+        }
+        printf("\n");
+    }
+    sleep(0.5);
 }
 
 int random_function(void)
@@ -41,8 +69,8 @@ int random_function(void)
 
 int get_number_of_station()
 {
-    int number_of_station;                                       //Gereftan Tedad Istgah:
-    system("csl");
+    int number_of_station;
+    system("cls");
 
     printf("Lotfan Tedad Istgah Mored Nazar khod ra vared konid: \n");
     scanf("%d",&number_of_station);
@@ -59,9 +87,12 @@ int get_number_of_station()
     station_counter = station_counter_Loop;
 
     int counter = 0;
-    while (counter < station_counter)
+    int k = 0;
+
+    for (counter = 0; counter <= station_counter; counter++)
     {
-        for (int k = 0; k < &number_of_police[counter]; ++k)
+        int controler = number_of_police[counter];
+        for (int k = 0; k < controler;)
         {
             int i = 8 * (random_function() % (dimension_x)) + 4;
             if (i > dimension_x)
@@ -75,36 +106,58 @@ int get_number_of_station()
 
             if (j % 4 == 0)
                 j += 2;
-
-            visual_map[j][i] = 'P';
+            if (visual_map[j][i] == ' ')
+            {
+                visual_map[j][i] = 'P';
+            }
+            else
+            {
+                continue;
+            }
             print();
 
             sleep(1);
-            system("csl");
-            counter ++;
+            system("cls");
+            k ++;
         }
     }
     return 0;
 }
 
-
-void print()
+void robber_start()
 {
-    int i,j;
+    int x,y;
 
-    //system("clear");
+    x = 8 * (random_function() % (dimension_x)) + 4;
+    if (x > dimension_x)
+        x = fabs(x - dimension_x);
 
-    for (i = 0; i <= ROW_BLOCK_SIZE * dimension_x; i++)
+    y = random_function() % dimension_y;
+    if (y > dimension_y)
+        y = fabs(y - dimension_x);
+
+    if (x % 8 == 0)
+        x += 4;
+
+    if (y % 4 == 0)
+        y += 2;
+    if (visual_map[y][x] == ' ')
     {
-        for (j = 0;j <= COL_BLOCK_SIZE * dimension_y; j++)
-        {
-            printf("%c",visual_map[i][j]);
-        }
-        printf("\n");
+        visual_map[y][x] = 'T';
     }
+    else
+    {
+        robber_start();
+    }
+    print();
 }
 
-void draw_table() {
+void robber_Move()
+{
+
+}
+
+void draw_table_1() {
     int i;
     for(i = 0; i <= ROW_BLOCK_SIZE * dimension_x; i++)
     {
@@ -128,6 +181,27 @@ void draw_table() {
 
             else
                 visual_map[i][j] = ' ';
+        }
+    }
+}
+
+void draw_table_2()
+{
+    int i,j;
+    for (i = 0; i <= (dimension_y * 2) ; i++)
+    {
+        for (j = 0; j <= (dimension_x * 4); j++)
+        {
+            if (i == 0 || i == (dimension_y * 2))
+            {
+                visual_map[i][j] = '-';
+            } else if (j == 0 || j == (dimension_x * 4))
+            {
+                visual_map[i][j] = '|';
+            } else
+                {
+                    visual_map[i][j] = ' ';
+                }
         }
     }
 }
