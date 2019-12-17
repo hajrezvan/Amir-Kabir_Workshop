@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include <conio.h>
+//#include <conio.h>
 #include <math.h>
 
 #define ROW_BLOCK_SIZE 4
@@ -40,6 +40,7 @@ void start_game()
     robber_start();
 
     get_number_of_station();
+
     robber_Move();
     police_Move();
 }
@@ -95,7 +96,7 @@ int get_number_of_station()
     {
         int k = 0;
         int controler = number_of_police[counter];
-        for (int k = 0; k < controler;)
+        for (int k = 1; k <= controler;)
         {
             int i = 8 * (random_function() % (dimension_x)) + 4;
             if (i > dimension_x)
@@ -119,7 +120,7 @@ int get_number_of_station()
             }
             print();
 
-            sleep(1);
+            sleep(0.5);
             system("cls");
             k ++;
         }
@@ -165,13 +166,14 @@ void robber_Move() {
                 int i = random_function();
                 if (i < 0)
                     i = (i % 2) * (-1);
-                i = i % 2;
+                i_counter = i % 2;
                 int j = random_function();
                 if (j < 0)
                     j = (i % 2) * (-1);
-                j = i % 2;
-                visual_map[i_counter][j_counter];
+                j_counter = i % 2;
+                visual_map[i_counter][j_counter] = ' ';
                 visual_map[i_counter + i][j_counter + j] = 'T';
+                print();
             } else
             {
                 continue;
@@ -179,6 +181,7 @@ void robber_Move() {
         }
     }
 }
+
 void police_Move()
 {
     int i_counter, j_counter;
@@ -193,13 +196,14 @@ void police_Move()
                 int i = random_function();
                 if (i < 0)
                     i = (i % 2) * (-1);
-                i = i % 2;
+                i_counter = i % 2;
                 int j = random_function();
                 if (j < 0)
-                    j = (i % 2) * (-1);
-                j = i % 2;
-                visual_map[i_counter][j_counter];
+                    i = (i % 2) * (-1);
+                j_counter = i % 2;
+                visual_map[i_counter][j_counter] = ' ';
                 visual_map[i_counter + i][j_counter + j] = 'P';
+                print();
                 i_counter++;
             }
             else
@@ -252,10 +256,9 @@ void draw_table_2()
             {
                 visual_map[i][j] = '|';
             } else
-                {
-                    visual_map[i][j] = ' ';
-                }
+            {
+                visual_map[i][j] = ' ';
+            }
         }
     }
 }
-
