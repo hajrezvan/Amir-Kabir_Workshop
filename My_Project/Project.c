@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-//#include <conio.h>
 #include <math.h>
+#include <stdbool.h>
+//#include <conio.h>
 
 #define ROW_BLOCK_SIZE 4
 #define COL_BLOCK_SIZE 8
 
 int dimension_x, dimension_y;
 char visual_map[4*50+1][8*50+1];
+bool varieble = true;
 
 int random_function(void);
 int get_number_of_station();
@@ -38,11 +40,13 @@ void start_game()
     print();
 
     robber_start();
-
     get_number_of_station();
 
-    robber_Move();
+    while (varieble)
+    {
     police_Move();
+    robber_Move();
+    }
 }
 
 void print()
@@ -189,20 +193,31 @@ void police_Move()
     {
         for (i_counter = 0; i_counter < dimension_x * 4;)
         {
-            if (visual_map[i_counter][j_counter] != 'p')
+            if (visual_map[i_counter][j_counter] == 'p')
             {
                 visual_map[i_counter][j_counter] = ' ';
 
                 int i = random_function();
                 if (i < 0)
+                {
                     i = (i % 2) * (-1);
+                }
                 i_counter = i % 2;
+
                 int j = random_function();
                 if (j < 0)
+                {
                     i = (i % 2) * (-1);
+                }
                 j_counter = i % 2;
-                visual_map[i_counter][j_counter] = ' ';
-                visual_map[i_counter + i][j_counter + j] = 'P';
+
+                if (visual_map[i_counter + i][j_counter + j] != 'T')
+                {
+                    visual_map[i_counter + i][j_counter + j] = 'P';
+                }else
+                {
+                    varieble = false;
+                }
                 print();
                 i_counter++;
             }
